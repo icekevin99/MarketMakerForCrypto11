@@ -58,8 +58,12 @@ class MarketMaker:
         self.exchange_config = exchange_config or {}
         
         # 初始化交易所客户端
-        if exchange == 'backpack':
-            self.client = BPClient(self.exchange_config)
+                if exchange == 'backpack':
+            # 确保API密钥被正确传递到客户端
+            exchange_config_with_keys = self.exchange_config.copy()
+            exchange_config_with_keys['api_key'] = api_key
+            exchange_config_with_keys['secret_key'] = secret_key
+            self.client = BPClient(exchange_config_with_keys)
         elif exchange == 'websea':
             self.client = WebseaClient(self.exchange_config)
         elif exchange == 'aster':
